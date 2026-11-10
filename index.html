@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Nisee, With Love</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=Parisienne&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<button class="music" id="musicBtn" aria-label="Play music">♫</button>
+<audio id="music" src="audio/birthday-music.mp3" loop></audio>
+<section class="welcome" id="welcome">
+  <div class="opening-copy">
+    <p class="eyebrow">A PRIVATE LITTLE CELEBRATION</p>
+    <p class="script">A letter has arrived for</p>
+    <h1>Nisee</h1>
+    <p class="intro">A little world of memories, wishes and surprises<br>has been made just for you.</p>
+  </div>
+  <button class="envelope-button" id="open" aria-label="Open your birthday envelope">
+    <span class="envelope">
+      <span class="envelope-letter"><b>For Nisee</b><small>With all my love ♡</small></span>
+      <span class="envelope-back"></span>
+      <span class="envelope-front"></span>
+      <span class="envelope-flap"></span>
+      <span class="envelope-seal"><span class="seal-letter">N</span><span class="seal-star">✦</span></span>
+    </span>
+    <span class="envelope-hint">TAP THE ENVELOPE TO OPEN</span>
+  </button>
+  <small class="opening-date">3 DECEMBER 2026 · YOUR DAY</small>
+</section>
+<main id="site" class="hidden">
+<header><a class="brand birthday-brand" href="#home" aria-label="A birthday wish for Nisee">Happy birthday, Nisee <span>♡</span></a><nav><a href="#letter">A letter</a><a href="#memories">Memories</a><a href="#surprises">Surprises</a><a href="#wish">Cake</a></nav><i>A day for you</i></header>
+<section class="hero" id="home"><div><p class="eyebrow">DECEMBER THE THIRD · A CELEBRATION OF YOU</p>
+<h2>To the girl who<br><em>makes life brighter.</em></h2><p class="description">A collection of little moments, familiar smiles and all the things that make you wonderfully you.</p><a class="underlink" href="#letter">TURN THE PAGE ↓</a></div>
+<div class="portrait"><img src="images/nise1.jpeg" alt="Nisee" ><p>The birthday girl · 2026</p></div><span class="number">03 / 12</span></section>
+<section class="count"><p class="eyebrow">A LITTLE ANTICIPATION</p><h2>The day is yours</h2><div class="timer"><div><b id="days">00</b><small>DAYS</small></div><i></i><div><b id="hours">00</b><small>HOURS</small></div><i></i><div><b id="minutes">00</b><small>MINUTES</small></div><i></i><div><b id="seconds">00</b><small>SECONDS</small></div></div><p id="countNote">Counting down to another year of you.</p></section>
+<section class="letter section"><p class="index">01 — THE LETTER</p><article><p class="script">My dearest Nisee,</p><h2>Some friendships<br>feel like <em>home.</em></h2>
+<p>On your special day, I hope you are reminded of how loved, appreciated and important you are. Thank you for the laughter, the little conversations, the unforgettable moments and all the memories that have become such a lovely part of life.</p>
+<p>May this new chapter bring you gentle days, brave dreams, unexpected happiness and every beautiful thing your heart has been wishing for. Keep being your lovely, unforgettable self.</p><p class="script sign">With so much love, always ♡</p></article><aside>A few words<br>from the heart</aside></section>
+<section class="memories section" id="memories"><p class="index">02 — THE LITTLE THINGS</p><div class="heading"><p class="eyebrow">A SCRAPBOOK OF US</p><h2>Little moments,<br><em>kept forever.</em></h2><p>The smallest moments often become our favourite memories.</p></div><p class="gallery-hint">Swipe, use the arrows, or let the memories drift by ♡</p><button class="surprise-memory" id="surpriseMemory">Pick a random memory ✦</button><div class="memory-grid" id="memoryGrid"></div></section>
+<section class="nisee section"><p class="index">03 — A LITTLE SPOTLIGHT</p><div class="heading"><p class="script">Today, and every day</p><h2>Simply <em>you.</em></h2></div><p class="gallery-hint">A little gallery dedicated to you — tap any photo to see it closer.</p><div class="nisee-grid" id="niseeGrid"></div></section>
+
+<section class="surprises section" id="surprises">
+  <p class="index">04 — LITTLE SURPRISES</p>
+  <div class="heading">
+    <p class="eyebrow">OPEN WHENEVER YOU NEED A SMILE</p>
+    <h2>Three little notes,<br><em>just for you.</em></h2>
+    <p>Choose an envelope. Each one has a tiny reminder waiting inside.</p>
+  </div>
+  <div class="note-grid">
+    <button class="note-card" data-note="You deserve every bit of happiness coming your way. Never forget how special you are. ♡">
+      <span class="note-icon">✉</span><strong>Open when you need a smile</strong><small>Tap to unfold</small><span class="note-reveal"></span>
+    </button>
+    <button class="note-card" data-note="On the days you doubt yourself, remember how much light you bring into the lives around you. ✦">
+      <span class="note-icon">✉</span><strong>Open when you need a reminder</strong><small>Tap to unfold</small><span class="note-reveal"></span>
+    </button>
+    <button class="note-card" data-note="Here's to new places, silly laughter, beautiful surprises and a year filled with reasons to celebrate. ♡">
+      <span class="note-icon">✉</span><strong>Open for a little birthday wish</strong><small>Tap to unfold</small><span class="note-reveal"></span>
+    </button>
+  </div>
+</section>
+<section class="wish-box-section">
+  <div class="wish-box">
+    <p class="eyebrow">A WISH FROM YOU</p>
+    <h2>What are you wishing for?</h2>
+    <p>Write a little wish for your new year. Keep it close to your heart.</p>
+    <div class="wish-entry">
+      <input id="personalWish" type="text" maxlength="100" placeholder="This year, I hope..." aria-label="Write your birthday wish">
+      <button id="saveWish">Keep my wish</button>
+    </div>
+    <p id="savedWish" aria-live="polite"></p>
+  </div>
+</section>
+<section class="wish" id="wish"><p class="eyebrow">ONE MORE THING...</p><h2>Make a <em>wish.</em></h2><p>Close your eyes, take a little breath, and make a wish just for you.</p>
+<div class="cake"><div class="flames" id="flames"><i></i><i></i><i></i></div><div class="candles"><i></i><i></i><i></i></div><div class="top"></div><div class="body">✦　♡　✦</div><div class="plate"></div></div>
+<button id="blow">Blow out the candles</button><p id="wishNote">May every wish find its way to you. ♡</p></section>
+<footer><b class="footer-birthday-wish">Happy birthday, Nisee <span>♡</span></b><p>Made with love, for Nisee.</p><small>03 · 12 · 2026</small></footer></main>
+<div class="lightbox hidden" id="lightbox"><button id="close">×</button><button id="prev">‹</button><img id="largePhoto" alt="Memory"><button id="next">›</button><p id="caption"></p></div>
+<script src="script.js"></script></body></html>
