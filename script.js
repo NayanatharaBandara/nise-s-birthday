@@ -40,7 +40,7 @@ function buildCarousel(container, items, kind) {
     const slide=document.createElement('article');
     slide.className='carousel-slide '+(kind==='memory'?'memory-card':'nisee-card');
     const img=document.createElement('img');
-    img.src='images/'+item.file;img.alt=item.caption;img.loading=i<2?'eager':'lazy';
+    img.src=''+item.file;img.alt=item.caption;img.loading=i<2?'eager':'lazy';
     img.addEventListener('click',()=>showPhoto(img.src,item.caption));
     slide.appendChild(img);track.appendChild(slide);
     photos.push({img,caption:item.caption});
@@ -63,7 +63,7 @@ function buildCarousel(container, items, kind) {
   const delay=2000;
   let timer=null;
   function stop(){if(timer){clearInterval(timer);timer=null;}}
-  function start(){stop();if(!document.hidden&&!wrap.matches(':hover')&&!wrap.contains(document.activeElement)){timer=setInterval(()=>go(index+1),delay);}}
+  function start(){stop();if(!document.hidden){timer=setInterval(()=>go(index+1),delay);}}
   function restart(){start();}
   controls.querySelector('.previous').addEventListener('click',()=>go(index-1,true));
   controls.querySelector('.next').addEventListener('click',()=>go(index+1,true));
@@ -100,9 +100,9 @@ const music=document.getElementById('music'),musicBtn=document.getElementById('m
 
 // Photo-backed little notes: tap a card to reveal its message over the picture.
 const noteBackgrounds = [
-  'images/memory1.jpeg',
-  'images/memory6.jpeg',
-  'images/memory10.jpeg'
+  'memory1.jpeg',
+  'memory6.jpeg',
+  'memory10.jpeg'
 ];
 document.querySelectorAll('.note-card').forEach((card, index) => {
   const photo = document.createElement('img');
