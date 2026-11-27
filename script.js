@@ -193,7 +193,7 @@ function startStoryExperience() {
   const site=document.getElementById('site'), header=site.querySelector(':scope > header');
   const original=[...site.children].filter(node=>node!==header&&!node.classList.contains('reading-progress'));
   const pick=id=>original.find(node=>node.id===id||(id==='count'&&node.classList.contains('count'))||(id==='nisee'&&node.classList.contains('nisee'))||(id==='wish-box-section'&&node.classList.contains('wish-box-section')));
-  const groups=[['home','count'],['letter'],['journey','little-question'],['memories'],['nisee'],['surprises','wish-box-section'],['wish']];
+  const groups=[['home','count'],['letter'],['journey','little-question'],['memories'],['nisee'],['surprises'],['wish']];
   const names=['The beginning','A letter for you','Our friendship','Our memories','A little spotlight','Little surprises','Make a wish'];
   const pages=groups.map((ids,index)=>{const page=document.createElement('section');page.className='story-page';page.setAttribute('aria-label',names[index]);ids.forEach(id=>{const el=pick(id);if(el)page.appendChild(el);});if(index===6){const foot=original.find(n=>n.tagName==='FOOTER');if(foot)page.appendChild(foot);}site.appendChild(page);return page;});
   const controls=document.createElement('div');controls.className='page-controls';controls.innerHTML='<button type="button" class="story-prev">← Previous</button><span class="page-progress"><b>01</b> / 07</span><button type="button" class="story-next">Next chapter →</button>';site.appendChild(controls);
