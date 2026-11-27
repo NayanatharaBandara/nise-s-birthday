@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=Parisienne&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"></head><body>
+<div class="reading-progress" aria-hidden="true"><span id="readingProgress"></span></div>
 <button class="music" id="musicBtn" aria-label="Play music">♫</button>
 <audio id="music" src="birthday-music.mp3" loop></audio>
 <section class="welcome" id="welcome">
@@ -24,22 +25,37 @@
     </span>
     <span class="envelope-hint">TAP THE ENVELOPE TO OPEN</span>
   </button>
-  <small class="opening-date">3 DECEMBER 2026 · YOUR DAY</small>
+  <small class="opening-date">3 DECEMBER 2026 · YOUR DAY</small><p class="opening-footnote">A small digital keepsake, made with a very full heart.</p>
 </section>
 <main id="site" class="hidden">
-<header><a class="brand birthday-brand" href="#home" aria-label="A birthday wish for Nisee">Happy birthday, Nisee <span>♡</span></a><nav><a href="#letter">A letter</a><a href="#memories">Memories</a><a href="#surprises">Surprises</a><a href="#wish">Cake</a></nav><i>A day for you</i></header>
+<header><a class="brand birthday-brand" href="#home" aria-label="A birthday wish for Nisee">Happy birthday, Nisee <span>♡</span></a><nav aria-label="Birthday story navigation"><a href="#letter">The letter</a><a href="#journey">Our journey</a><a href="#memories">Memories</a><a href="#surprises">Little notes</a><a href="#wish">A wish</a></nav><i>A day for you</i></header>
 <section class="hero" id="home"><div><p class="eyebrow">DECEMBER THE THIRD · A CELEBRATION OF YOU</p>
-<h2>To the girl who<br><em>makes life brighter.</em></h2><p class="description">A collection of little moments, familiar smiles and all the things that make you wonderfully you.</p><a class="underlink" href="#letter">TURN THE PAGE ↓</a></div>
+<h2>To the girl who<br><em>makes life brighter.</em></h2><p class="description">A collection of little moments, familiar smiles and all the things that make you wonderfully you.</p><a class="underlink" href="#letter">STAY A LITTLE · SCROLL TO BEGIN ↓</a><div class="hero-meta"><span>AN ARCHIVE OF US</span><span>EST. IN A THOUSAND LITTLE MOMENTS</span></div></div>
 <div class="portrait"><img src="nise1.jpeg" alt="Nisee" ><p>The birthday girl · 2026</p></div><span class="number">03 / 12</span></section>
 <section class="count"><p class="eyebrow">A LITTLE ANTICIPATION</p><h2>The day is yours</h2><div class="timer"><div><b id="days">00</b><small>DAYS</small></div><i></i><div><b id="hours">00</b><small>HOURS</small></div><i></i><div><b id="minutes">00</b><small>MINUTES</small></div><i></i><div><b id="seconds">00</b><small>SECONDS</small></div></div><p id="countNote">Counting down to another year of you.</p></section>
 <section class="letter section"><p class="index">01 — THE LETTER</p><article><p class="script">My dearest Nisee,</p><h2>Some friendships<br>feel like <em>home.</em></h2>
 <p>On your special day, I hope you are reminded of how loved, appreciated and important you are. Thank you for the laughter, the little conversations, the unforgettable moments and all the memories that have become such a lovely part of life.</p>
 <p>May this new chapter bring you gentle days, brave dreams, unexpected happiness and every beautiful thing your heart has been wishing for. Keep being your lovely, unforgettable self.</p><p class="script sign">With so much love, always ♡</p></article><aside>A few words<br>from the heart</aside></section>
-<section class="memories section" id="memories"><p class="index">02 — THE LITTLE THINGS</p><div class="heading"><p class="eyebrow">A SCRAPBOOK OF US</p><h2>Little moments,<br><em>kept forever.</em></h2><p>The smallest moments often become our favourite memories.</p></div><p class="gallery-hint">Swipe, use the arrows, or let the memories drift by ♡</p><button class="surprise-memory" id="surpriseMemory">Pick a random memory ✦</button><div class="memory-grid" id="memoryGrid"></div></section>
-<section class="nisee section"><p class="index">03 — A LITTLE SPOTLIGHT</p><div class="heading"><p class="script">Today, and every day</p><h2>Simply <em>you.</em></h2></div><p class="gallery-hint">A little gallery dedicated to you — tap any photo to see it closer.</p><div class="nisee-grid" id="niseeGrid"></div></section>
+<section class="journey section" id="journey">
+<p class="index">02 — OUR LITTLE UNIVERSE</p>
+<div class="heading"><p class="eyebrow">NOT JUST THE BIG DAYS</p><h2>A friendship is made<br><em>of a thousand little things.</em></h2><p>Not a timeline of dates. Just the kind of moments that quietly become part of who we are.</p></div>
+<div class="journey-line">
+<article class="journey-stop"><span class="journey-node">01</span><div><small>THE BEGINNING</small><h3>Somewhere, it all began.</h3><p>A hello that became familiar. A stranger who slowly became one of your people.</p></div></article>
+<article class="journey-stop"><span class="journey-node">02</span><div><small>THE LITTLE THINGS</small><h3>Our own language.</h3><p>The conversations, the laughter, the silly things that probably make sense only to us.</p></div></article>
+<article class="journey-stop"><span class="journey-node">03</span><div><small>THE EVERYDAY MAGIC</small><h3>Showing up, in a hundred ways.</h3><p>Because friendship is not only the photographs. It is also the ordinary days we made better.</p></div></article>
+<article class="journey-stop"><span class="journey-node">04</span><div><small>WHAT COMES NEXT</small><h3>Still writing the story.</h3><p>More places, more stories, more memories we have not made yet. This is nowhere near the last chapter.</p></div></article>
+</div><p class="journey-footnote">A little reminder: the best parts of our story are still ahead. <span>♡</span></p>
+</section>
+<section class="memory-prompt section" id="little-question">
+<p class="index">03 — A LITTLE PAUSE</p><div class="prompt-card"><p class="eyebrow">JUST FOR FUN</p><h2>What makes a memory <em>stay?</em></h2><p>Choose the answer that feels most like us.</p>
+<div class="prompt-options"><button type="button" data-answer="The laughter that starts for no reason — and somehow never really ends.">The laughter</button><button type="button" data-answer="The tiny details nobody else would notice, but we will remember.">The little details</button><button type="button" data-answer="Having someone who makes even an ordinary day feel a little lighter.">The person beside you</button></div>
+<p class="prompt-answer" id="promptAnswer" aria-live="polite">Pick one. There is no wrong answer. ♡</p></div>
+</section>
+<section class="memories section" id="memories"><p class="index">04 — THE PHOTO ARCHIVE</p><div class="heading"><p class="eyebrow">A SCRAPBOOK OF US</p><h2>Little moments,<br><em>kept forever.</em></h2><p>The smallest moments often become our favourite memories.</p></div><p class="gallery-hint">A living photo album. Stay here a while, or take the controls and wander. ♡</p><button class="surprise-memory" id="surpriseMemory">Pick a random memory ✦</button><div class="memory-grid" id="memoryGrid"></div></section>
+<section class="nisee section"><p class="index">05 — A LITTLE SPOTLIGHT</p><div class="heading"><p class="script">Today, and every day</p><h2>Simply <em>you.</em></h2></div><p class="gallery-hint">A little gallery dedicated to you — tap any photo to see it closer.</p><div class="nisee-grid" id="niseeGrid"></div></section>
 
 <section class="surprises section" id="surprises">
-  <p class="index">04 — LITTLE SURPRISES</p>
+  <p class="index">06 — LITTLE SURPRISES</p>
   <div class="heading">
     <p class="eyebrow">OPEN WHENEVER YOU NEED A SMILE</p>
     <h2>Three little notes,<br><em>just for you.</em></h2>
@@ -61,7 +77,7 @@
   <div class="wish-box">
     <p class="eyebrow">A WISH FROM YOU</p>
     <h2>What are you wishing for?</h2>
-    <p>Write a little wish for your new year. Keep it close to your heart.</p>
+    <p>Write a little wish for your new year. It stays in this browser as a tiny keepsake.</p>
     <div class="wish-entry">
       <input id="personalWish" type="text" maxlength="100" placeholder="This year, I hope..." aria-label="Write your birthday wish">
       <button id="saveWish">Keep my wish</button>
@@ -72,6 +88,6 @@
 <section class="wish" id="wish"><p class="eyebrow">ONE MORE THING...</p><h2>Make a <em>wish.</em></h2><p>Close your eyes, take a little breath, and make a wish just for you.</p>
 <div class="cake"><div class="flames" id="flames"><i></i><i></i><i></i></div><div class="candles"><i></i><i></i><i></i></div><div class="top"></div><div class="body">✦　♡　✦</div><div class="plate"></div></div>
 <button id="blow">Blow out the candles</button><p id="wishNote">May every wish find its way to you. ♡</p></section>
-<footer><b class="footer-birthday-wish">Happy birthday, Nisee <span>♡</span></b><p>Made with love, for Nisee.</p><small>03 · 12 · 2026</small></footer></main>
+<footer><b class="footer-birthday-wish">Happy birthday, Nisee <span>♡</span></b><p>Made with love, for Nisee.</p><small>03 · 12 · 2026</small><p class="footer-afterword">Some people become part of your favourite memories. You became part of the way I remember life. ♡</p></footer></main>
 <div class="lightbox hidden" id="lightbox"><button id="close">×</button><button id="prev">‹</button><img id="largePhoto" alt="Memory"><button id="next">›</button><p id="caption"></p></div>
 <script src="script.js"></script></body></html>
