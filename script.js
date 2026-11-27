@@ -143,7 +143,8 @@ document.querySelectorAll('.note-card').forEach((card, index) => {
 });
 
 // Let her write a wish and reveal it as a keepsake on the page.
-document.getElementById('saveWish').addEventListener('click', () => {
+const legacyWishButton = document.getElementById('saveWish');
+if (legacyWishButton) legacyWishButton.addEventListener('click', () => {
   const field = document.getElementById('personalWish');
   const output = document.getElementById('savedWish');
   const wish = field.value.trim();
