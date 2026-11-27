@@ -60,7 +60,7 @@ function buildCarousel(container, items, kind) {
     captionLine.textContent=items[index].caption;
     if(manual) restart();
   }
-  const delay=2000;
+  const delay=3600;
   let timer=null;
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function start(){stop();if(!document.hidden){timer=setInterval(()=>go(index+1),delay);}}
@@ -91,12 +91,12 @@ document.getElementById('open').onclick=()=>{
   setTimeout(()=>{
     document.getElementById('welcome').classList.add('hidden');
     document.getElementById('site').classList.remove('hidden');
-    showStoryPage(0);
-    window.scrollTo(0,0);
+    window.scrollTo({top:0,behavior:"instant"});
+    startStoryExperience();
   },950);
 };
 const birthday=new Date(2026,11,3,0,0,0);function tick(){let d=birthday-new Date();if(d<0){d=0;document.getElementById('countNote').textContent='Today is your day. Happy birthday, Nisee! ♡'}const vals=[Math.floor(d/86400000),Math.floor(d%86400000/3600000),Math.floor(d%3600000/60000),Math.floor(d%60000/1000)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(vals[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
-const music=document.getElementById('music'),musicBtn=document.getElementById('musicBtn');musicBtn.onclick=async()=>{if(music.paused){try{await music.play();musicBtn.classList.add('playing');musicBtn.textContent='Ⅱ'}catch(e){alert('Please place your song in the audio folder and name it birthday-music.mp3.')}}else{music.pause();musicBtn.classList.remove('playing');musicBtn.textContent='♫'}};
+const music=document.getElementById('music'),musicBtn=document.getElementById('musicBtn');musicBtn.onclick=async()=>{if(music.paused){try{await music.play();musicBtn.classList.add('playing');musicBtn.textContent='Ⅱ'}catch(e){alert('Please check that birthday-music.mp3 is in the same folder as index.html.')}}else{music.pause();musicBtn.classList.remove('playing');musicBtn.textContent='♫'}};
 
 // Photo-backed little notes: tap a card to reveal its message over the picture.
 const noteBackgrounds = [
@@ -150,6 +150,7 @@ document.getElementById('saveWish').addEventListener('click', () => {
     return;
   }
   output.textContent = 'A wish just for you: “' + wish + '” ♡';
+  try { localStorage.setItem('niseeBirthdayWish', wish); } catch (error) {}
   field.value = '';
 });
 
@@ -183,59 +184,50 @@ function celebrate() {
 
 document.getElementById('blow').onclick=()=>{document.getElementById('flames').classList.add('out');celebrate();document.getElementById('wishNote').textContent='Wish made. May this year be as beautiful as your heart. ♡';document.getElementById('blow').textContent='Your wish is on its way';document.getElementById('blow').disabled=true};
 
-// Turn the website into a page-by-page birthday story.
-const storyMain=document.getElementById('site');
-const storyHeader=storyMain.querySelector('header');
-const storyFooter=storyMain.querySelector('footer');
-const contentSections=[...storyMain.querySelectorAll(':scope > section')];
-const storyPages=[];
-contentSections.forEach((section,index)=>{
-  const page=document.createElement('div');
-  page.className='story-page';
-  page.dataset.page=String(index);
-  section.parentNode.insertBefore(page,section);
-  page.appendChild(section);
-  storyPages.push(page);
-});
-// Keep the closing signature with the birthday cake page.
-if(storyFooter && storyPages.length){storyPages[storyPages.length-1].appendChild(storyFooter);}
-const pageControls=document.createElement('div');
-pageControls.className='page-controls';
-pageControls.innerHTML='<button type="button" class="page-turn page-back" id="previousPage"><span class="turn-symbol">←</span><span class="turn-label">Previous</span></button><span class="page-progress" id="pageProgress"></span><button type="button" class="page-turn page-forward" id="nextPage"><span class="turn-label">Turn the page</span><span class="turn-symbol">✦</span></button>';
-storyMain.appendChild(pageControls);
-let currentStoryPage=0;
-function showStoryPage(index){
-  currentStoryPage=Math.max(0,Math.min(index,storyPages.length-1));
-  storyPages.forEach((page,i)=>page.classList.toggle('active',i===currentStoryPage));
-  document.getElementById('previousPage').disabled=currentStoryPage===0;
-  document.getElementById('nextPage').disabled=currentStoryPage===storyPages.length-1;
-  document.getElementById('pageProgress').innerHTML='<b>'+String(currentStoryPage+1).padStart(2,'0')+' / '+String(storyPages.length).padStart(2,'0')+'</b><span>our little story</span>';
-  const back=document.getElementById('previousPage');
-  const forward=document.getElementById('nextPage');
-  back.querySelector('.turn-label').textContent='Back a page';
-  const nextLabels=['Begin the story','A little more…','Keep reading','Turn to our memories','A little spotlight','Open the surprises','Make a little wish','Make a wish'];
-  forward.querySelector('.turn-label').textContent=currentStoryPage===storyPages.length-1?'The end, with love':(nextLabels[currentStoryPage]||'Turn the page');
-  forward.querySelector('.turn-symbol').textContent=currentStoryPage===storyPages.length-1?'♡':'✦';
-  window.scrollTo({top:0,behavior:'smooth'});
+
+function startStoryExperience() {
+  const site = document.getElementById('site');
+  const sections = [...site.querySelectorAll(':scope > section, :scope > footer')];
+  sections.forEach(section => section.classList.add('reveal-section'));
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -45px 0px' });
+  sections.forEach(section => revealObserver.observe(section));
+  const progress = document.getElementById('readingProgress');
+  const navLinks = [...site.querySelectorAll('header nav a')];
+  const anchors = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = ((max > 0 ? window.scrollY / max : 0) * 100) + '%';
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
+  const activeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  anchors.forEach(anchor => activeObserver.observe(anchor));
+  site.querySelectorAll('header nav a, .underlink').forEach(link => link.addEventListener('click', event => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) { event.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }));
 }
-document.getElementById('previousPage').addEventListener('click',()=>showStoryPage(currentStoryPage-1));
-document.getElementById('nextPage').addEventListener('click',()=>showStoryPage(currentStoryPage+1));
-// Header links jump to the matching story page rather than scrolling a long page.
-storyHeader.querySelectorAll('nav a').forEach(link=>{
-  link.addEventListener('click',event=>{
-    const targetId=link.getAttribute('href').slice(1);
-    const target=document.getElementById(targetId);
-    if(target){
-      event.preventDefault();
-      const page=target.closest('.story-page');
-      if(page) showStoryPage(storyPages.indexOf(page));
-    }
-  });
-});
-// Keyboard arrows also turn the pages when the photo viewer is closed.
-document.addEventListener('keydown',event=>{
-  if(document.getElementById('site').classList.contains('hidden')) return;
-  if(!document.getElementById('lightbox').classList.contains('hidden')) return;
-  if(event.key==='ArrowRight') showStoryPage(currentStoryPage+1);
-  if(event.key==='ArrowLeft') showStoryPage(currentStoryPage-1);
+document.querySelectorAll('.prompt-options button').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.prompt-options button').forEach(item => item.classList.remove('selected'));
+  button.classList.add('selected');
+  const answer = document.getElementById('promptAnswer');
+  answer.textContent = button.dataset.answer;
+  answer.classList.remove('answer-pop'); requestAnimationFrame(() => answer.classList.add('answer-pop'));
+}));
+const wishField = document.getElementById('personalWish');
+const wishOutput = document.getElementById('savedWish');
+try { const saved = localStorage.getItem('niseeBirthdayWish'); if (saved && wishOutput) wishOutput.textContent = 'A wish just for you: “' + saved + '” ♡'; } catch (error) {}
+document.addEventListener('keydown', event => {
+  const lightbox = document.getElementById('lightbox');
+  if (!lightbox.classList.contains('hidden')) {
+    if (event.key === 'ArrowRight') movePhoto(1);
+    if (event.key === 'ArrowLeft') movePhoto(-1);
+  }
 });
