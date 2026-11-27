@@ -58,7 +58,8 @@ function buildCarousel(container, items, kind) {
     track.style.transform=`translateX(-${index*100}%)`;
     dotButtons.forEach((dot,i)=>dot.classList.toggle('active',i===index));
     captionLine.textContent=items[index].caption;
-    wrap.style.setProperty('--carousel-photo', `url("${items[index].file}")`);
+    wrap.style.setProperty('--carousel-photo', 'url("' + items[index].file + '")');
+    if (kind === 'nisee') { const site=document.getElementById('site'); if(site) site.style.setProperty('--story-background','url("' + items[index].file + '")'); }
     if(manual) restart();
   }
   const delay=3600;
@@ -87,6 +88,7 @@ function movePhoto(n){current=(current+n+photos.length)%photos.length;document.g
 document.getElementById('close').onclick=()=>document.getElementById('lightbox').classList.add('hidden');document.getElementById('prev').onclick=()=>movePhoto(-1);document.getElementById('next').onclick=()=>movePhoto(1);
 document.getElementById('lightbox').onclick=e=>{if(e.target.id==='lightbox')e.currentTarget.classList.add('hidden')};document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lightbox').classList.add('hidden')});
 document.getElementById('open').onclick=()=>{
+  const soundtrack=document.getElementById('music'); soundtrack.volume=0.65; soundtrack.play().catch(()=>{});
   const trigger=document.querySelector('.envelope-button');
   trigger.classList.add('opening');
   setTimeout(()=>{
@@ -187,75 +189,26 @@ document.getElementById('blow').onclick=()=>{document.getElementById('flames').c
 
 
 function startStoryExperience() {
-  const site = document.getElementById('site');
-  const header = site.querySelector(':scope > header');
-  const original = [...site.children].filter(node => node !== header);
-  const groups = [
-    ['home','count'],
-    ['letter'],
-    ['journey','little-question'],
-    ['memories'],
-    ['nisee'],
-    ['surprises','wish-box-section'],
-    ['wish']
-  ];
-  const pageNames = ['Welcome','The letter','Our journey','Memories','A little spotlight','Little surprises','Make a wish'];
-  const pages = groups.map((ids, index) => {
-    const page = document.createElement('div');
-    page.className = 'story-page';
-    page.dataset.page = String(index);
-    page.setAttribute('aria-label', pageNames[index]);
-    ids.forEach(id => {
-      const section = original.find(node => node.id === id || (id === 'nisee' && node.classList.contains('nisee')) || (id === 'wish-box-section' && node.classList.contains('wish-box-section')));
-      if (section) page.appendChild(section);
-    });
-    if (index === 6) {
-      const footer = original.find(node => node.tagName === 'FOOTER');
-      if (footer) page.appendChild(footer);
-    }
-    site.appendChild(page);
-    return page;
-  });
-  const controls = document.createElement('div');
-  controls.className = 'page-controls';
-  controls.innerHTML = '<button type="button" class="story-prev">← Previous</button><span class="page-progress"><b>01</b> / 07</span><button type="button" class="story-next">Next chapter →</button>';
-  site.appendChild(controls);
-  let active = 0;
-  const navLinks = [...site.querySelectorAll('header nav a')];
-  const navTargets = ['letter','journey','memories','surprises','wish'];
-  function showPage(index, updateHash = true) {
-    active = Math.max(0, Math.min(pages.length - 1, index));
-    pages.forEach((page, i) => {
-      page.classList.toggle('active', i === active);
-      page.setAttribute('aria-hidden', i === active ? 'false' : 'true');
-    });
-    controls.querySelector('.page-progress').innerHTML = '<b>' + String(active + 1).padStart(2,'0') + '</b> / ' + String(pages.length).padStart(2,'0');
-    controls.querySelector('.story-prev').disabled = active === 0;
-    controls.querySelector('.story-next').textContent = active === pages.length - 1 ? 'The end ♡' : 'Next chapter →';
-    navLinks.forEach((link, i) => link.classList.toggle('active', navTargets[i] && groups[active].includes(navTargets[i])));
-    const progress = document.getElementById('readingProgress');
-    if (progress) progress.style.width = ((active + 1) / pages.length * 100) + '%';
-    if (updateHash) history.replaceState(null, '', '#' + (groups[active][0] || 'home'));
-    window.scrollTo({top:0,behavior:'smooth'});
-    pages[active].classList.remove('page-arrive');
-    requestAnimationFrame(() => pages[active].classList.add('page-arrive'));
-  }
-  controls.querySelector('.story-prev').addEventListener('click', () => showPage(active - 1));
-  controls.querySelector('.story-next').addEventListener('click', () => showPage(active + 1));
-  navLinks.forEach((link, i) => link.addEventListener('click', event => {
-    event.preventDefault();
-    const id = navTargets[i];
-    const pageIndex = groups.findIndex(group => group.includes(id));
-    if (pageIndex >= 0) showPage(pageIndex);
-  }));
-  site.querySelectorAll('.underlink').forEach(link => link.addEventListener('click', event => {
-    event.preventDefault();
-    const pageIndex = groups.findIndex(group => group.includes('letter'));
-    showPage(pageIndex);
-  }));
-  showPage(0, false);
+  const site=document.getElementById('site'), header=site.querySelector(':scope > header');
+  const original=[...site.children].filter(node=>node!==header&&!node.classList.contains('reading-progress'));
+  const pick=id=>original.find(node=>node.id===id||(id==='count'&&node.classList.contains('count'))||(id==='nisee'&&node.classList.contains('nisee'))||(id==='wish-box-section'&&node.classList.contains('wish-box-section')));
+  const groups=[['home','count'],['letter'],['journey','little-question'],['memories'],['nisee'],['surprises','wish-box-section'],['wish']];
+  const names=['The beginning','A letter for you','Our friendship','Our memories','A little spotlight','Little surprises','Make a wish'];
+  const pages=groups.map((ids,index)=>{const page=document.createElement('section');page.className='story-page';page.setAttribute('aria-label',names[index]);ids.forEach(id=>{const el=pick(id);if(el)page.appendChild(el);});if(index===6){const foot=original.find(n=>n.tagName==='FOOTER');if(foot)page.appendChild(foot);}site.appendChild(page);return page;});
+  const controls=document.createElement('div');controls.className='page-controls';controls.innerHTML='<button type="button" class="story-prev">← Previous</button><span class="page-progress"><b>01</b> / 07</span><button type="button" class="story-next">Next chapter →</button>';site.appendChild(controls);
+  let active=0;const links=[...header.querySelectorAll('nav a')],targets=['letter','journey','memories','surprises','wish'];
+  function showPage(index,hash=true){active=Math.max(0,Math.min(6,index));pages.forEach((p,i)=>{p.classList.toggle('active',i===active);p.setAttribute('aria-hidden',i===active?'false':'true');});
+    controls.querySelector('.page-progress').innerHTML='<b>'+String(active+1).padStart(2,'0')+'</b> / 07';
+    controls.querySelector('.story-prev').disabled=active===0;controls.querySelector('.story-next').disabled=active===6;controls.querySelector('.story-next').textContent=active===6?'The end ♡':'Next chapter →';
+    links.forEach((link,i)=>link.classList.toggle('active',groups[active].includes(targets[i])));
+    const bar=document.getElementById('readingProgress');if(bar)bar.style.width=((active+1)/7*100)+'%';
+    if(hash)history.replaceState(null,'','#'+groups[active][0]);window.scrollTo({top:0,behavior:'smooth'});pages[active].classList.remove('page-arrive');requestAnimationFrame(()=>pages[active].classList.add('page-arrive'));}
+  controls.querySelector('.story-prev').addEventListener('click',()=>showPage(active-1));controls.querySelector('.story-next').addEventListener('click',()=>showPage(active+1));
+  links.forEach((link,i)=>link.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const page=groups.findIndex(group=>group.includes(targets[i]));if(page>=0)showPage(page);}));
+  const brand=header.querySelector('.brand');if(brand)brand.addEventListener('click',event=>{event.preventDefault();showPage(0);});
+  const start=site.querySelector('.underlink');if(start)start.addEventListener('click',event=>{event.preventDefault();showPage(1);});showPage(0,false);
 }
-
+const openingMusic=document.getElementById('music');if(openingMusic){openingMusic.volume=0.65;const playOnLoad=()=>openingMusic.play().catch(()=>{});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',playOnLoad,{once:true});else playOnLoad();}
 document.querySelectorAll('.prompt-options button').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('.prompt-options button').forEach(item => item.classList.remove('selected'));
   button.classList.add('selected');
