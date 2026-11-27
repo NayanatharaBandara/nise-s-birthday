@@ -711,3 +711,90 @@ body { overflow-x:hidden; }
  .answer-pop { animation:none; }
  *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
 }
+
+
+/* Mobile-first chapter experience */
+html,body { width:100%; min-height:100%; overflow-x:hidden; }
+body { -webkit-text-size-adjust:100%; }
+#site { min-height:100svh; background-attachment:scroll !important; }
+#site > header { position:sticky; top:0; z-index:40; min-height:66px; height:auto; display:flex; flex-wrap:wrap; gap:8px 14px; padding:10px clamp(12px,4vw,34px); }
+#site > header .brand { font-size:clamp(1.25rem,4vw,1.8rem); }
+#site > header nav { display:flex; flex:1 1 100%; order:3; width:100%; justify-content:flex-start; gap:8px; overflow-x:auto; overscroll-behavior-x:contain; padding:8px 2px 6px; scrollbar-width:none; }
+#site > header nav::-webkit-scrollbar { display:none; }
+#site > header nav a { flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:8px 12px; border:1px solid rgba(104,38,59,.22); border-radius:999px; background:rgba(255,250,245,.96); color:#542335 !important; font-size:.68rem; letter-spacing:.02em; position:relative; z-index:2; }
+#site > header nav a::after { display:none; }
+#site > header nav a.active { background:#68263b; color:#fff8f2 !important; border-color:#68263b; }
+#site > header > i { display:none; }
+.story-page { display:none !important; min-height:calc(100svh - 130px); width:100%; }
+.story-page.active { display:flex !important; flex-direction:column; justify-content:center; animation:chapterIn .55s ease both; }
+.story-page > section { width:100%; }
+.page-controls { position:sticky; bottom:0; z-index:35; display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px clamp(12px,4vw,34px); padding-bottom:max(12px,env(safe-area-inset-bottom)); background:rgba(255,248,242,.97); border-top:1px solid rgba(104,38,59,.18); box-shadow:0 -8px 25px rgba(53,21,34,.08); }
+.page-controls button { min-height:44px; border:1px solid #68263b; border-radius:999px; padding:10px 16px; background:#68263b; color:#fff8f2; font-size:.72rem; letter-spacing:.02em; touch-action:manipulation; }
+.page-controls button.story-prev { background:transparent; color:#68263b; }
+.page-controls button:disabled { opacity:.3; }
+.page-progress { min-width:56px; font-size:.85rem; }
+@keyframes chapterIn { from {opacity:0; transform:translateY(18px)} to {opacity:1;transform:translateY(0)} }
+.carousel-slide { position:relative; overflow:hidden; isolation:isolate; background:rgba(255,250,245,.98); }
+.carousel-slide::before { content:""; position:absolute; z-index:-1; inset:0; background-image:linear-gradient(rgba(255,248,242,.78),rgba(255,248,242,.88)),var(--carousel-photo); background-position:center; background-size:cover; filter:saturate(.9); transform:scale(1.08); transition:background-image .4s ease; }
+.carousel-slide img { position:relative; z-index:1; background:rgba(255,250,245,.72) !important; }
+.carousel-caption { color:#4b1d2d !important; font-weight:500; text-shadow:0 1px 0 white; }
+button, a, .carousel-slide img, .note-card { -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+@media(max-width:760px) {
+  #site > header { padding:9px 12px; }
+  #site > header nav { gap:7px; }
+  #site > header nav a { font-size:.64rem; padding:8px 11px; min-height:40px; }
+  .story-page { min-height:calc(100svh - 150px); }
+  .hero { display:flex; flex-direction:column; align-items:center; text-align:center; padding:42px 20px 52px; gap:30px; min-height:0; }
+  .hero h2 { font-size:clamp(2.8rem,12vw,4.3rem); line-height:.94; }
+  .hero .description { font-size:.9rem; line-height:1.75; }
+  .hero-meta { justify-content:center; gap:10px; font-size:.48rem; }
+  .hero-meta span + span { border:0; padding:0; }
+  .portrait { width:min(78vw,300px); margin:8px auto 18px; }
+  .portrait img { height:clamp(250px,68vw,340px); }
+  .number { right:16px; bottom:12px; font-size:.85rem; }
+  .count { padding:48px 14px; }
+  .timer { gap:clamp(7px,2.8vw,15px); }
+  .timer div { min-width:0; }
+  .timer b { font-size:clamp(1.8rem,8vw,2.7rem); }
+  .timer small { font-size:.48rem; letter-spacing:.08em; }
+  .letter { display:block; padding:48px 16px !important; }
+  .letter article { padding:30px 22px; }
+  .letter h2 { font-size:clamp(2.5rem,10vw,3.4rem); }
+  .letter article>p:not(.script) { font-size:.88rem; line-height:1.85; }
+  .journey,.memory-prompt { padding:48px 17px !important; }
+  .journey .heading { margin:18px auto 35px; }
+  .journey .heading h2,.heading h2,.wish h2 { font-size:clamp(2.35rem,10vw,3.35rem); }
+  .journey-stop { grid-template-columns:36px minmax(0,1fr); gap:13px; padding-bottom:28px; }
+  .journey-stop p { font-size:.82rem; line-height:1.7; }
+  .journey-stop h3 { font-size:1.55rem; }
+  .prompt-card { padding:28px 18px; }
+  .prompt-options { flex-direction:column; }
+  .prompt-options button { width:100%; min-height:44px; }
+  .memories,.nisee,.surprises { padding:48px 16px !important; }
+  .photo-carousel { width:100%; }
+  .carousel-slide { padding:8px 8px 12px; }
+  .memory-carousel .carousel-slide img,.nisee-carousel .carousel-slide img { height:min(58svh,390px); min-height:220px; object-fit:contain; }
+  .carousel-controls { gap:18px; margin-top:14px; }
+  .carousel-arrow { width:44px; height:44px; }
+  .carousel-dots { gap:7px; max-width:65vw; flex-wrap:wrap; }
+  .note-grid { grid-template-columns:1fr; gap:13px; }
+  .note-card { min-height:135px; padding:22px 18px; }
+  .wish-box-section { padding:48px 16px !important; }
+  .wish-entry { flex-direction:column; }
+  .wish-entry input,.wish-entry button { width:100%; min-height:48px; }
+  .wish { min-height:0 !important; padding:55px 16px !important; }
+  .cake { transform:scale(.88); margin:40px auto 20px; }
+  #site > footer { padding:30px 16px; }
+  .footer-afterword { font-size:1rem; }
+  .page-controls { gap:8px; }
+  .page-controls button { min-height:46px; padding:10px 13px; font-size:.68rem; }
+}
+@media(max-width:360px) {
+  #site > header .brand { font-size:1.15rem; }
+  .page-controls button { padding:9px 10px; font-size:.62rem; }
+  .timer b { font-size:1.65rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .story-page.active { animation:none; }
+  .carousel-slide img { transition:none; }
+}
