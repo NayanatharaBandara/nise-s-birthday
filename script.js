@@ -150,6 +150,7 @@ document.getElementById('saveWish').addEventListener('click', () => {
     return;
   }
   output.textContent = 'A wish just for you: “' + wish + '” ♡';
+  try { localStorage.setItem('niseeBirthdayWish', wish); } catch (error) {}
   field.value = '';
 });
 
@@ -223,10 +224,6 @@ document.querySelectorAll('.prompt-options button').forEach(button => button.add
 const wishField = document.getElementById('personalWish');
 const wishOutput = document.getElementById('savedWish');
 try { const saved = localStorage.getItem('niseeBirthdayWish'); if (saved && wishOutput) wishOutput.textContent = 'A wish just for you: “' + saved + '” ♡'; } catch (error) {}
-document.getElementById('saveWish').addEventListener('click', () => {
-  const wish = wishField.value.trim(); if (!wish) return;
-  try { localStorage.setItem('niseeBirthdayWish', wish); } catch (error) {}
-});
 document.addEventListener('keydown', event => {
   const lightbox = document.getElementById('lightbox');
   if (!lightbox.classList.contains('hidden')) {
