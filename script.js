@@ -58,6 +58,7 @@ function buildCarousel(container, items, kind) {
     track.style.transform=`translateX(-${index*100}%)`;
     dotButtons.forEach((dot,i)=>dot.classList.toggle('active',i===index));
     captionLine.textContent=items[index].caption;
+    wrap.style.setProperty('--carousel-photo', `url("${items[index].file}")`);
     if(manual) restart();
   }
   const delay=3600;
@@ -96,7 +97,7 @@ document.getElementById('open').onclick=()=>{
   },950);
 };
 const birthday=new Date(2026,11,3,0,0,0);function tick(){let d=birthday-new Date();if(d<0){d=0;document.getElementById('countNote').textContent='Today is your day. Happy birthday, Nisee! ♡'}const vals=[Math.floor(d/86400000),Math.floor(d%86400000/3600000),Math.floor(d%3600000/60000),Math.floor(d%60000/1000)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(vals[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
-const music=document.getElementById('music'),musicBtn=document.getElementById('musicBtn');musicBtn.onclick=async()=>{if(music.paused){try{await music.play();musicBtn.classList.add('playing');musicBtn.textContent='Ⅱ'}catch(e){alert('Please check that birthday-music.mp3 is in the same folder as index.html.')}}else{music.pause();musicBtn.classList.remove('playing');musicBtn.textContent='♫'}};
+
 
 // Photo-backed little notes: tap a card to reveal its message over the picture.
 const noteBackgrounds = [
@@ -187,33 +188,74 @@ document.getElementById('blow').onclick=()=>{document.getElementById('flames').c
 
 function startStoryExperience() {
   const site = document.getElementById('site');
-  const sections = [...site.querySelectorAll(':scope > section, :scope > footer')];
-  sections.forEach(section => section.classList.add('reveal-section'));
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+  const header = site.querySelector(':scope > header');
+  const original = [...site.children].filter(node => node !== header);
+  const groups = [
+    ['home','count'],
+    ['letter'],
+    ['journey','little-question'],
+    ['memories'],
+    ['nisee'],
+    ['surprises','wish-box-section'],
+    ['wish']
+  ];
+  const pageNames = ['Welcome','The letter','Our journey','Memories','A little spotlight','Little surprises','Make a wish'];
+  const pages = groups.map((ids, index) => {
+    const page = document.createElement('div');
+    page.className = 'story-page';
+    page.dataset.page = String(index);
+    page.setAttribute('aria-label', pageNames[index]);
+    ids.forEach(id => {
+      const section = original.find(node => node.id === id || (id === 'nisee' && node.classList.contains('nisee')) || (id === 'wish-box-section' && node.classList.contains('wish-box-section')));
+      if (section) page.appendChild(section);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -45px 0px' });
-  sections.forEach(section => revealObserver.observe(section));
-  const progress = document.getElementById('readingProgress');
+    if (index === 6) {
+      const footer = original.find(node => node.tagName === 'FOOTER');
+      if (footer) page.appendChild(footer);
+    }
+    site.appendChild(page);
+    return page;
+  });
+  const controls = document.createElement('div');
+  controls.className = 'page-controls';
+  controls.innerHTML = '<button type="button" class="story-prev">← Previous</button><span class="page-progress"><b>01</b> / 07</span><button type="button" class="story-next">Next chapter →</button>';
+  site.appendChild(controls);
+  let active = 0;
   const navLinks = [...site.querySelectorAll('header nav a')];
-  const anchors = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-  const updateProgress = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    if (progress) progress.style.width = ((max > 0 ? window.scrollY / max : 0) * 100) + '%';
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
-  const activeObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+  const navTargets = ['letter','journey','memories','surprises','wish'];
+  function showPage(index, updateHash = true) {
+    active = Math.max(0, Math.min(pages.length - 1, index));
+    pages.forEach((page, i) => {
+      page.classList.toggle('active', i === active);
+      page.setAttribute('aria-hidden', i === active ? 'false' : 'true');
     });
-  }, { rootMargin: '-25% 0px -65% 0px' });
-  anchors.forEach(anchor => activeObserver.observe(anchor));
-  site.querySelectorAll('header nav a, .underlink').forEach(link => link.addEventListener('click', event => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) { event.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    controls.querySelector('.page-progress').innerHTML = '<b>' + String(active + 1).padStart(2,'0') + '</b> / ' + String(pages.length).padStart(2,'0');
+    controls.querySelector('.story-prev').disabled = active === 0;
+    controls.querySelector('.story-next').textContent = active === pages.length - 1 ? 'The end ♡' : 'Next chapter →';
+    navLinks.forEach((link, i) => link.classList.toggle('active', navTargets[i] && groups[active].includes(navTargets[i])));
+    const progress = document.getElementById('readingProgress');
+    if (progress) progress.style.width = ((active + 1) / pages.length * 100) + '%';
+    if (updateHash) history.replaceState(null, '', '#' + (groups[active][0] || 'home'));
+    window.scrollTo({top:0,behavior:'smooth'});
+    pages[active].classList.remove('page-arrive');
+    requestAnimationFrame(() => pages[active].classList.add('page-arrive'));
+  }
+  controls.querySelector('.story-prev').addEventListener('click', () => showPage(active - 1));
+  controls.querySelector('.story-next').addEventListener('click', () => showPage(active + 1));
+  navLinks.forEach((link, i) => link.addEventListener('click', event => {
+    event.preventDefault();
+    const id = navTargets[i];
+    const pageIndex = groups.findIndex(group => group.includes(id));
+    if (pageIndex >= 0) showPage(pageIndex);
   }));
+  site.querySelectorAll('.underlink').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    const pageIndex = groups.findIndex(group => group.includes('letter'));
+    showPage(pageIndex);
+  }));
+  showPage(0, false);
 }
+
 document.querySelectorAll('.prompt-options button').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('.prompt-options button').forEach(item => item.classList.remove('selected'));
   button.classList.add('selected');
