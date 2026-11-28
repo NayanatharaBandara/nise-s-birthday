@@ -209,7 +209,21 @@ function startStoryExperience() {
   const brand=header.querySelector('.brand');if(brand)brand.addEventListener('click',event=>{event.preventDefault();showPage(0);});
   const start=site.querySelector('.underlink');if(start)start.addEventListener('click',event=>{event.preventDefault();showPage(1);});showPage(0,false);
 }
-const openingMusic=document.getElementById('music');if(openingMusic){openingMusic.volume=0.65;const playOnLoad=()=>openingMusic.play().catch(()=>{});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',playOnLoad,{once:true});else playOnLoad();}
+// Music begins only after the envelope is opened; this control lets her pause or resume it.
+const openingMusic=document.getElementById('music');
+const musicToggle=document.getElementById('musicToggle');
+function updateMusicControl(){
+ if(!openingMusic||!musicToggle)return;
+ const playing=!openingMusic.paused;
+ musicToggle.classList.toggle('is-playing',playing);
+ musicToggle.setAttribute('aria-pressed',playing?'true':'false');
+ musicToggle.setAttribute('aria-label',playing?'Turn birthday music off':'Turn birthday music on');
+ musicToggle.title=playing?'Turn music off':'Turn music on';
+ const label=musicToggle.querySelector('.music-label');
+ if(label)label.textContent=playing?'Music on':'Music off';
+}
+if(openingMusic){openingMusic.volume=0.42;openingMusic.addEventListener('play',updateMusicControl);openingMusic.addEventListener('pause',updateMusicControl);}
+if(musicToggle&&openingMusic){musicToggle.addEventListener('click',()=>{if(openingMusic.paused){openingMusic.play().catch(()=>updateMusicControl());}else{openingMusic.pause();}});updateMusicControl();}
 document.querySelectorAll('.prompt-options button').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('.prompt-options button').forEach(item => item.classList.remove('selected'));
   button.classList.add('selected');
