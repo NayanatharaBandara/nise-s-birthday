@@ -171,3 +171,12 @@
   #site .story-page.page-arrive,
   #site .story-page.page-arrive > section { animation:none !important; }
 }
+
+/* Keep card interactions gentle too — no bouncing or sudden movement */
+#site .story-page.active .heading { animation:none !important; }
+#site .note-card:hover .note-photo,
+#site .note-card:focus-visible .note-photo { transform:none !important; opacity:.88; }
+#site .journey-tile:hover,
+#site .journey-tile.active { transform:none !important; box-shadow:0 14px 30px rgba(58,19,39,.2); }
+#site .journey-photo img { transition:opacity 1s ease-in-out !important; }
+#site .journey-photo:hover img { transform:none !important; opacity:.9; }
