@@ -180,3 +180,64 @@
 #site .journey-tile.active { transform:none !important; box-shadow:0 14px 30px rgba(58,19,39,.2); }
 #site .journey-photo img { transition:opacity 1s ease-in-out !important; }
 #site .journey-photo:hover img { transform:none !important; opacity:.9; }
+
+
+/* A discreet music symbol that stays available throughout every story chapter. */
+.music-toggle {
+  position: fixed !important;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1200;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.82);
+  border-radius: 50%;
+  color: #fffaf6;
+  background: linear-gradient(145deg,#68263f,#a45170);
+  box-shadow: 0 7px 22px rgba(55,17,37,.28);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .9s ease, background-color .6s ease, box-shadow .6s ease, transform .6s ease, visibility .9s ease;
+}
+.music-toggle > span:first-child {
+  font: 500 1.55rem/1 'Cormorant Garamond',serif;
+}
+.music-toggle.is-playing { background: linear-gradient(145deg,#8e3b5d,#bd7187); }
+.music-toggle:hover { transform: scale(1.06); box-shadow: 0 9px 26px rgba(55,17,37,.34); }
+.music-toggle:focus-visible { outline: 3px solid #f5d5d8; outline-offset: 4px; }
+body.birthday-site-open .music-toggle {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+@media(max-width:760px) {
+  .music-toggle { right: 13px; bottom: 13px; width: 44px; height: 44px; }
+}
+
+/* A very soft, staggered floating motion gives the friendship cards a little life. */
+@keyframes journeyCardFloatOne {
+  0%,100% { transform: translate3d(0,0,0) rotate(-.35deg); }
+  50% { transform: translate3d(0,-7px,0) rotate(.45deg); }
+}
+@keyframes journeyCardFloatTwo {
+  0%,100% { transform: translate3d(0,0,0) rotate(.4deg); }
+  50% { transform: translate3d(0,-9px,0) rotate(-.45deg); }
+}
+#site .journey-mosaic .journey-tile {
+  animation: journeyCardFloatOne 7.5s ease-in-out infinite;
+  will-change: transform;
+}
+#site .journey-mosaic .journey-tile:nth-of-type(2) { animation-name: journeyCardFloatTwo; animation-delay: -2.4s; }
+#site .journey-mosaic .journey-tile:nth-of-type(3) { animation-delay: -4.1s; }
+#site .journey-mosaic .journey-tile:hover,
+#site .journey-mosaic .journey-tile:focus-visible,
+#site .journey-mosaic .journey-tile.active { animation-play-state: paused; }
+@media(prefers-reduced-motion:reduce) {
+  #site .journey-mosaic .journey-tile { animation: none !important; will-change: auto; }
+  .music-toggle { transition: none !important; }
+}
