@@ -241,3 +241,98 @@ body.birthday-site-open .music-toggle {
   #site .journey-mosaic .journey-tile { animation: none !important; will-change: auto; }
   .music-toggle { transition: none !important; }
 }
+
+
+/* Clearer desktop photo background: remove the heavy wash and blurred photo haze. */
+#site:before {
+  background-image: linear-gradient(135deg,rgba(87,29,57,.12),rgba(190,105,119,.08)),var(--story-background,url("background.jpeg")) !important;
+  background-position:center center;
+  background-size:cover;
+  filter:none !important;
+}
+#site .photo-carousel:before {
+  filter:none !important;
+  opacity:.18;
+  background-image:linear-gradient(rgba(255,248,242,.12),rgba(255,248,242,.18)),var(--carousel-photo) !important;
+}
+@media(min-width:761px) {
+  #site:before { background-attachment:fixed; }
+  #site .photo-carousel:before { opacity:.12; }
+}
+
+/* The letter should feel like a soft page, not a bright white box. */
+#site .letter article {
+  background:linear-gradient(145deg,rgba(247,218,218,.94),rgba(255,235,228,.94)) !important;
+  border:1px solid rgba(145,68,95,.2);
+  border-radius:5px 24px 5px 24px;
+  box-shadow:0 18px 48px rgba(73,25,48,.12);
+  color:#503640 !important;
+}
+#site .letter article > p:not(.script) { color:#503640 !important; }
+#site .letter article .sign { margin-top:30px; }
+#site .letter-hearts {
+  display:inline-block;
+  margin-left:8px;
+  color:#c62848;
+  font-family:'DM Sans',sans-serif;
+  font-size:1.05em;
+  letter-spacing:.16em;
+  text-shadow:0 2px 10px rgba(198,40,72,.18);
+  animation:heartWarmPulse 2.8s ease-in-out infinite;
+}
+@keyframes heartWarmPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+
+/* Slow, noticeable but restrained vertical drift for each chapter's content. */
+@keyframes chapterContentFloat {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-9px); }
+}
+#site .story-page.active > section > .heading,
+#site .story-page.active > section > article,
+#site .story-page.active > section > .prompt-card,
+#site .story-page.active > section > .journey-mosaic,
+#site .story-page.active > section > .note-grid,
+#site .story-page.active > section > .memory-grid,
+#site .story-page.active > section > .nisee-grid,
+#site .story-page.active > section > .timer,
+#site .story-page.active > section > .portrait,
+#site .story-page.active > section > .cake {
+  animation:chapterContentFloat 6.5s ease-in-out infinite;
+}
+
+/* The Our Journey cards get an unmistakable, gentle rocking rotation. */
+@keyframes journeyCardSwayA {
+  0%,100% { transform:translateY(0) rotate(-1.3deg); }
+  50% { transform:translateY(-10px) rotate(1.2deg); }
+}
+@keyframes journeyCardSwayB {
+  0%,100% { transform:translateY(-3px) rotate(1.1deg); }
+  50% { transform:translateY(-13px) rotate(-1.4deg); }
+}
+#site .journey-mosaic .journey-tile {
+  animation:journeyCardSwayA 6.8s ease-in-out infinite !important;
+  transform-origin:50% 55%;
+}
+#site .journey-mosaic .journey-tile:nth-of-type(2) {
+  animation:journeyCardSwayB 7.4s ease-in-out -2s infinite !important;
+}
+#site .journey-mosaic .journey-tile:nth-of-type(3) {
+  animation:journeyCardSwayA 7.1s ease-in-out -3.6s infinite !important;
+}
+#site .journey-mosaic .journey-tile:hover,
+#site .journey-mosaic .journey-tile:focus-visible,
+#site .journey-mosaic .journey-tile.active { animation-play-state:paused !important; }
+@media(prefers-reduced-motion:reduce) {
+  #site .story-page.active > section > .heading,
+  #site .story-page.active > section > article,
+  #site .story-page.active > section > .prompt-card,
+  #site .story-page.active > section > .journey-mosaic,
+  #site .story-page.active > section > .note-grid,
+  #site .story-page.active > section > .memory-grid,
+  #site .story-page.active > section > .nisee-grid,
+  #site .story-page.active > section > .timer,
+  #site .story-page.active > section > .portrait,
+  #site .story-page.active > section > .cake,
+  #site .journey-mosaic .journey-tile,
+  #site .letter-hearts { animation:none !important; }
+}
