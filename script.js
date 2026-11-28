@@ -94,6 +94,7 @@ document.getElementById('open').onclick=()=>{
   setTimeout(()=>{
     document.getElementById('welcome').classList.add('hidden');
     document.getElementById('site').classList.remove('hidden');
+    document.body.classList.add('birthday-site-open');
     window.scrollTo({top:0,behavior:"instant"});
     startStoryExperience();
   },950);
