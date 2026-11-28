@@ -82,23 +82,19 @@
 }
 #site > header nav a.active { box-shadow: 0 3px 12px rgba(35,8,22,.18); }
 
-/* A soft fade-and-lift each time a chapter is selected */
-@keyframes birthdayChapterFade {
-  from { opacity: 0; transform: translateY(14px); filter: blur(2px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-#site .story-page.active,
-#site .story-page.page-arrive {
-  animation: birthdayChapterFade .62s cubic-bezier(.2,.7,.2,1) both !important;
-}
-#site .story-page.page-arrive > section {
-  animation: birthdayContentFade .7s ease both;
-}
-@keyframes birthdayContentFade {
-  from { opacity: .55; }
-  to { opacity: 1; }
-}
-
+/* Calm, unhurried fade between chapters — no sliding, zooming or blur */
+@keyframes birthdaySoftFade { from { opacity: 0; } to { opacity: 1; } }
+#site .story-page.page-arrive { animation: birthdaySoftFade 1.35s ease-in-out both !important; }
+#site .journey-tile, #site .note-card, #site .prompt-options button, #site .carousel-slide, #site .carousel-dot, #site .note-card .note-reveal { transition: opacity .9s ease-in-out, background-color .9s ease-in-out, border-color .9s ease-in-out, box-shadow .9s ease-in-out, color .9s ease-in-out, max-height .9s ease-in-out; }
+#site .journey-tile:before { transition: opacity 1s ease-in-out !important; }
+#site .journey-tile:hover:before, #site .journey-tile:focus-visible:before, #site .journey-tile.active:before { transform: none !important; opacity: .86; }
+#site .carousel-track { transition: transform 1s ease-in-out !important; }
+#site .music-toggle { position:fixed;right:20px;bottom:20px;z-index:1000;display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border:1px solid rgba(255,255,255,.7);border-radius:999px;color:#fffaf6;background:rgba(83,28,54,.92);box-shadow:0 6px 22px rgba(47,15,32,.22);cursor:pointer;font:500 .78rem 'DM Sans',sans-serif;letter-spacing:.02em;backdrop-filter:blur(8px);transition:background-color .5s ease,box-shadow .5s ease,opacity .5s ease;}
+#site .music-toggle span:first-child { font-size:1.15rem;line-height:1; }
+#site .music-toggle.is-playing { background:rgba(130,62,88,.95); }
+#site .music-toggle:focus-visible { outline:3px solid #f5d5d8;outline-offset:3px; }
+@media(max-width:760px){#site .music-toggle{right:12px;bottom:12px;padding:10px 13px;}}
+@media(prefers-reduced-motion:reduce){#site .story-page.page-arrive,#site .journey-tile,#site .note-card,#site .prompt-options button,#site .carousel-slide,#site .carousel-dot,#site .note-card .note-reveal,#site .carousel-track{animation:none!important;transition:none!important;}}
 /* Improve contrast on text that sits over the changing photo background */
 #site .count,
 #site .journey,
