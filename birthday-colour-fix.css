@@ -54,3 +54,124 @@
  #site .note-card{min-height:235px}
 }
 @media(prefers-reduced-motion:reduce){#site .journey-tile:before{transition:none}}
+
+
+/* Final polish: high-contrast navigation, gentle chapter fades and readable copy */
+#site > header {
+  background: linear-gradient(105deg,#4b1933 0%,#702944 58%,#91445f 100%) !important;
+  border-bottom: 1px solid rgba(255,255,255,.22) !important;
+}
+#site > header .brand,
+#site > header .brand span,
+#site > header > i,
+#site > header nav a {
+  color: #fffaf6 !important;
+}
+#site > header nav a {
+  background: rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  text-shadow: none !important;
+  font-weight: 500;
+}
+#site > header nav a:hover,
+#site > header nav a:focus-visible,
+#site > header nav a.active {
+  color: #4b1933 !important;
+  background: #fff4ed !important;
+  border-color: #fff4ed !important;
+}
+#site > header nav a.active { box-shadow: 0 3px 12px rgba(35,8,22,.18); }
+
+/* A soft fade-and-lift each time a chapter is selected */
+@keyframes birthdayChapterFade {
+  from { opacity: 0; transform: translateY(14px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+#site .story-page.active,
+#site .story-page.page-arrive {
+  animation: birthdayChapterFade .62s cubic-bezier(.2,.7,.2,1) both !important;
+}
+#site .story-page.page-arrive > section {
+  animation: birthdayContentFade .7s ease both;
+}
+@keyframes birthdayContentFade {
+  from { opacity: .55; }
+  to { opacity: 1; }
+}
+
+/* Improve contrast on text that sits over the changing photo background */
+#site .count,
+#site .journey,
+#site .memory-prompt,
+#site .memories,
+#site .nisee {
+  color: #39212b;
+}
+#site .count h2,
+#site .journey h2,
+#site .memory-prompt h2,
+#site .memories h2,
+#site .nisee h2,
+#site .count p,
+#site .journey p,
+#site .memory-prompt p,
+#site .memories p,
+#site .nisee p {
+  text-shadow: 0 1px 2px rgba(255,250,246,.75);
+}
+#site .journey-tile b,
+#site .journey-tile small,
+#site .note-card strong,
+#site .note-card small,
+#site .note-card .note-reveal {
+  text-shadow: 0 2px 8px rgba(35,10,24,.8) !important;
+}
+#site .letter article {
+  background: rgba(255,250,246,.97) !important;
+  color: #39212b !important;
+}
+#site .letter article > p:not(.script) {
+  color: #503640 !important;
+}
+#site .letter article .script,
+#site .letter article h2 { color: #68263b; }
+#site .letter article h2 em { color: #91445f; }
+#site .rsvp-note {
+  max-width: 520px;
+  margin: 28px auto 0;
+  padding: 22px 24px;
+  border: 1px solid rgba(104,38,59,.22);
+  border-radius: 18px;
+  background: rgba(255,250,246,.82);
+  color: #503640;
+  letter-spacing: normal;
+}
+#site .rsvp-note p { margin: 7px 0; line-height: 1.65; }
+#site .rsvp-note .rsvp-heading {
+  color: #68263b;
+  font: 1.5rem 'Cormorant Garamond',serif;
+}
+#site .rsvp-link {
+  display: inline-block;
+  margin: 12px 0 7px;
+  padding: 12px 19px;
+  border-radius: 999px;
+  background: #68263b;
+  color: #fff8f2 !important;
+  font-size: .76rem;
+  font-weight: 500;
+  letter-spacing: .03em;
+  transition: transform .2s,background .2s;
+}
+#site .rsvp-link:hover { transform: translateY(-2px); background: #91445f; }
+#site .rsvp-number { display:block; color:#705a61; font-size:.7rem; letter-spacing:.08em; }
+@media(max-width:760px) {
+  #site > header nav { justify-content:flex-start !important; }
+  #site > header nav a { white-space:nowrap; }
+  #site .rsvp-note { padding:18px 15px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  #site .story-page.active,
+  #site .story-page.page-arrive,
+  #site .story-page.page-arrive > section { animation:none !important; }
+}
